@@ -1,25 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import ReactDataGrid from "react-data-grid"
 
-function App() {
+function Grid(){
+const [selectedIndex, setSelectedIndex] = useState([]);
+const columns = [
+{
+key: "id",
+name: "ID"
+},
+{
+  key: "title",
+  name: "Title"
+},
+{
+  key: "count",
+  name: "Count"
+}
+
+]
+
+let rowsx = [{
+  id: 1,
+  title: "title1",
+  count: 1
+},
+{
+  id: 2,
+  title: "title2",
+  count: 2
+},
+{
+   id: 3,
+  title: "title3",
+  count: 3
+}
+]
+
+let onRowsSelected = rows =>{
+setSelectedIndex(rows.map(r=>r.rowIdx))
+}
+console.log("selectedIndex: "+ selectedIndex);
+return(
+  <>
+  <div>
+      <ReactDataGrid
+          rowKey="id"
+          columns={columns}
+          rowGetter={i=>rowsx[i]}
+          rowsCount={3}
+          minHeight={300}
+          rowSelection={{
+            showCheckbox: true,
+            enableShiftSelect: true,
+           onRowsSelected: onRowsSelected,
+            selectBy: {
+              indexes: selectedIndex
+            }
+          }}
+        />
+  </div>
+  </>
+);
+        
+}
+
+
+
+function App(){
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Grid />
     </div>
   );
 }
-
 export default App;
